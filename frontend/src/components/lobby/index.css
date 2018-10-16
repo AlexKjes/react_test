@@ -1,0 +1,24 @@
+
+
+.lobby-menu {
+  background: #b5e1c7ff;
+  display: inline-block;
+  float: left;
+  width:20%;
+  height:100%;
+}
+
+
+.context-window {
+  color: #116c8aff;
+  background: #dce7eaff;
+  display: inline-block;
+  float: left;
+  height:100%;
+  width:80%;
+}
+
+.lobby-main {
+  width: 800px;
+  height: 600px;
+}

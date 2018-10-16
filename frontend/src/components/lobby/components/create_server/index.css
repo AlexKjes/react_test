@@ -1,0 +1,31 @@
+
+
+h2 {
+  margin-left: 1em;
+  margin-top: 1em;
+}
+
+.container {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+hr{
+  background-image: linear-gradient(to right, rgba(17,108,138,.5), rgba(17,108,138,0));
+  height: 1px;
+  width: 90%;
+  left: 0;
+}
+
+.form-entry {
+  width:100%;
+  margin-bottom: 1em;
+}
+
+.form {
+  border-left: 1px solid #333;
+  margin-left: 5%;
+  padding-left: .5em;
+
+}

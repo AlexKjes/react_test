@@ -1,0 +1,21 @@
+.team-box-outer {
+  display: inline-block;
+  float: left;
+  margin-left: 5%;
+  width:18%;
+}
+
+.team-box-outer>h3 {
+  font-size: 1.2em;
+}
+
+.team-box-inner {
+  margin-left: 10%;
+  padding-top: 0.5em;
+  padding-bottom: .5em;
+  text-align: center;
+  border: 1px solid #444;
+  border-radius: 4px;
+  width: auto;
+  background-color: #fff3;
+}

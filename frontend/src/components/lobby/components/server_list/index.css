@@ -1,0 +1,32 @@
+
+.server-list {
+  height: 100%;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tbody>tr {
+  border-top: 1px solid #4443;
+  font-size: 1.2em;
+  height: 2em;
+}
+
+tbody>tr:hover {
+  background: #def;
+}
+
+thead th {
+  background: lightblue;
+  position: sticky;
+  top: 0;
+  font-size: 1.2em;
+  height: 2em;
+}

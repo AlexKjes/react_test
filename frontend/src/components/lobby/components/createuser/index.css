@@ -1,0 +1,40 @@
+
+
+.create-user-overlay {
+  z-index: 99;
+  background: #4448;
+  position: absolute;
+
+  width: inherit;
+  height: inherit;
+}
+
+
+.create-user-input {
+  display: inline-block;
+}
+
+
+.create-user-box-outer {
+  width: 50%;
+  height: 25%;
+  margin: auto;
+  margin-top: 20%;
+  //padding-left: 25%;
+  //padding-top: 25%;
+}
+
+.create-user-box-outer>h2 {
+  margin: 0;
+  color: #eee;
+}
+
+.create-user-box-inner {
+  text-align: center;
+  vertical-align: middle;
+  border: 1 solid #444;
+  border-radius: 4px;
+  background: #def;
+  height: 100%;
+  width: 100%;
+}
