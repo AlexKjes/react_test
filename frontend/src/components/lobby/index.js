@@ -4,10 +4,17 @@ import { ServerList } from './components/server_list/';
 import { CreateServer } from './components/create_server/';
 import { GameLobby } from './components/game_lobby/';
 import { CreateUser } from './components/createuser';
+//import { SocketProvider, SocketConsumer } from './socketcontext';
+
+import io from 'socket.io-client';
+
 
 export class Lobby extends Component {
   constructor(props){
     super(props);
+
+    this.socket = io('http://localhost:5000/');
+
 
     this.state = {view: 0, user: null, game: null};
 
@@ -45,11 +52,13 @@ export class Lobby extends Component {
 
   getView(){
       if (this.state.view === 0){
-        return <ServerList setGame={this.setGameHandle}/>;
+        return <ServerList setGame={this.setGameHandle} user={this.state.user}
+          socket={this.socket}/>
       } else if (this.state.view === 1){
-        return <CreateServer setGame={this.setGameHandle}/>;
+        return <CreateServer setGame={this.setGameHandle} user={this.state.user}/>;
       } else if (this.state.view === 2){
-        return <GameLobby game={this.state.game}/>;
+        return <GameLobby game={this.state.game} socket={this.socket}
+          user={this.state.user}/>
       }
   }
 

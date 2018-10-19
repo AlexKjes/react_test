@@ -19,3 +19,8 @@
   width: auto;
   background-color: #fff3;
 }
+
+.team-boxes {
+  width: 100%;
+  display: inline-block;
+}

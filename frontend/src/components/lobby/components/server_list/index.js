@@ -8,14 +8,19 @@ export class ServerList extends Component {
   constructor(props){
     super(props);
 
+    // bindings
     this.selectGameHandle = this.selectGame.bind(this);
+    this.renderServersHandle = this.renderServers.bind(this);
+    this.addServerHandle = this.addServerListener.bind(this);
+    this.removeServerHandle = this.removeServerListener.bind(this);
 
-    const socket = io('http://localhost:5000/', {path: '/server-list'});
-    socket.on('message', (msg)=>console.log(msg));
+    this.getServers();
+    this.initSocketListeners();
 
+    this.props.socket.emit('room', 'server-list');
 
     this.state = {
-      serverList: this.mockServers(50)
+      servers: {}
     }
 
 
@@ -32,18 +37,67 @@ export class ServerList extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.serverList}
+          {this.renderServersHandle()}
         </tbody>
       </table>
     </div>
   }
 
   selectGame(game){
-    this.props.setGame(game);
+    var ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = ()=>{
+      if (ajax.readyState === 4 && ajax.status === 200){
+        this.props.setGame(game);
+      } else if (ajax.state !== 200){
+        // TODO error handling
+      }
+    }
+    ajax.open('POST', 'http://localhost/api/server/join');
+    ajax.setRequestHeader('Content-Type', 'application/json');
+    ajax.send(JSON.stringify({game: {id: game.id}, user: this.props.user}));
+
   }
 
-  serverSocket(){
+  initSocketListeners(){
+    this.props.socket.on('add-server', this.addServerHandle);
+    this.props.socket.on('rm-server', this.removeServerHandle);
+  }
 
+  // socket listeners
+  addServerListener(server){
+    this.state.servers[server.id] = server;
+    this.setState(this.state);
+  }
+  removeServerListener(server){
+    delete this.state.servers[server];
+    this.setState(this.state);
+  }
+
+  componentWillUnmount() {
+    this.props.socket.emit('leave', 'server-lsit');
+  }
+
+  getServers(){
+    var ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = ()=>{
+      if (ajax.readyState === 4 && ajax.status === 200){
+        var response = JSON.parse(ajax.responseText);
+        var newState = Object.assign({}, this.state,
+           {servers: response});
+        this.setState(newState);
+      }
+    }
+    ajax.open('GET', 'http://localhost/api/server');
+    ajax.send();
+  }
+
+  renderServers(){
+    var servers = [];
+    for (var key in this.state.servers){
+      var game = Object.assign(new Game(), this.state.servers[key]);
+      servers.push(<ServerEntry key={key} game={game} selectGame={this.selectGameHandle}/>
+    )}
+    return servers;
   }
 
   mockServers(n){

@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import './index.css';
-import {Game} from'../../../../classes/game';
+import {Game} from '../../../../classes/game';
+
+import io from 'socket.io-client';
 
 
 export class CreateServer extends Component {
   constructor(props){
     super(props);
+
+    this.socket = io('http://localhost:5000/');
 
     this.validateFormData = this.validateFormData.bind(this);
     this.getFormData = this.getFormData.bind(this);
@@ -56,7 +60,17 @@ export class CreateServer extends Component {
   buttonClick() {
     let game = this.getFormData();
     if (this.validateFormData(game)){
-      this.props.setGame(game);
+      var ajax = new XMLHttpRequest();
+      ajax.onreadystatechange = ()=>{
+        if (ajax.readyState === 4 && ajax.status === 200){
+          this.props.setGame({id: ajax.responseText});
+        }
+      }
+      ajax.open('POST', 'http://localhost/api/server');
+      ajax.setRequestHeader('Content-Type', 'application/json');
+      ajax.send(JSON.stringify({name: game.name, size: game.size, nTeams: game.nTeams,
+        teamSize: game.teamSize, creator: this.props.user.id
+      }));
     }
   }
 

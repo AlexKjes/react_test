@@ -11,7 +11,7 @@
 
 
 .create-user-input {
-  display: inline-block;
+  padding-top: 15%;
 }
 
 
@@ -30,6 +30,7 @@
 }
 
 .create-user-box-inner {
+  position: relative;
   text-align: center;
   vertical-align: middle;
   border: 1 solid #444;
