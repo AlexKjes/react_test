@@ -18,6 +18,15 @@ function GameInfo(name, size, teamSize, nTeams, creator){
 
 }
 
+GameInfo.prototype.nPlayers = function(){
+  var ret = 0;
+  for (var i=0;i<this.teams.length;i++){
+    ret+=this.teams[i].length;
+  }
+  return ret;
+}
+
+
 GameInfo.prototype.toJson = function(){
   return JSON.stringify({
     "id": this.id,
@@ -49,6 +58,17 @@ GameInfo.prototype.addPlayer = function(player){
     return 0;
   }
   return -1;
+}
+
+GameInfo.prototype.removePlayer = function(player){
+  for (var i=0;i<this.teams.length;i++){
+    for (var j=0;j<this.teams[i].length;j++){
+      if (this.teams[i][j].id === player.id){
+        this.teams[i].splice(j, 1);
+        return;
+      }
+    }
+  }
 }
 
 

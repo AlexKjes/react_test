@@ -69,7 +69,7 @@ export class ServerList extends Component {
     this.setState(this.state);
   }
   removeServerListener(server){
-    delete this.state.servers[server];
+    delete this.state.servers[server.id];
     this.setState(this.state);
   }
 
@@ -81,6 +81,7 @@ export class ServerList extends Component {
     var ajax = new XMLHttpRequest();
     ajax.onreadystatechange = ()=>{
       if (ajax.readyState === 4 && ajax.status === 200){
+        console.log(ajax.responseText);
         var response = JSON.parse(ajax.responseText);
         var newState = Object.assign({}, this.state,
            {servers: response});

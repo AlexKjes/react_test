@@ -12,7 +12,7 @@ export class GameLobby extends Component {
 
     this.props.socket.emit('room', 'game:'+this.props.game.id);
     this.props.socket.on('update', m=>{
-      var newState = Object.assing({}, this.state, {game: m});
+      var newState = Object.assign({}, this.state, {game: m});
       this.setState(newState);
     });
 

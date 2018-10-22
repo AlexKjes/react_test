@@ -69,7 +69,7 @@ export class CreateServer extends Component {
       ajax.open('POST', 'http://localhost/api/server');
       ajax.setRequestHeader('Content-Type', 'application/json');
       ajax.send(JSON.stringify({name: game.name, size: game.size, nTeams: game.nTeams,
-        teamSize: game.teamSize, creator: this.props.user.id
+        teamSize: game.teamSize, creator: this.props.user
       }));
     }
   }

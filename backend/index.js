@@ -43,8 +43,20 @@ app.post('/server/join', (req, res)=>{
   } else {
     var isAdded = serverList.servers[req.body.game.id].addPlayer(req.body.user);
     if(isAdded === 0){ // player is added to game
+      if (userList[req.body.user.id].inGame !== undefined){
+        var sid = userList[req.body.user.id].inGame;
+        serverList.servers[sid].removePlayer(req.body.user);
+        if (serverList.servers[sid].nPlayers() === 0){
+          io.in('server-list').emit('rm-server', serverList.servers[sid]);
+          delete serverList.servers[sid];
+        } else{
+          io.to('game:'+sid).emit('update', serverList.servers[sid]);
+          io.in('server-list').emit('add-server', serverList.servers[sid]);
+        }
+      }
+      userList[req.body.user.id].inGame = req.body.game.id;
       res.sendStatus(200);
-      io.in('game:'+req.body.game.id).emit('add-user', req.body.user);
+      io.in('game:'+req.body.game.id).emit('update', serverList.servers[req.body.game.id]);
       io.in('server-list').emit('add-server', serverList.servers[req.body.game.id]);
     } else if (isAdded === 1) { // user is already in game
       res.sendStatus(200);
@@ -58,11 +70,24 @@ app.post('/server/join', (req, res)=>{
 function postGame(req, res){
   var gd = req.body// game data
   let game = new GameInfo(gd.name, gd.size, gd.teamSize,
-     gd.nTeams, userList[gd.creator]);
+     gd.nTeams, gd.creator);
+  if (userList[gd.creator.id].inGame !== undefined){
+
+    var sid = userList[gd.creator.id].inGame;
+    serverList.servers[sid].removePlayer(gd.creator);
+    if (serverList.servers[sid].nPlayers() === 0){
+      io.in('server-list').emit('rm-server', serverList.servers[sid]);
+      delete serverList.servers[sid];
+    } else {
+      io.to('game:'+sid).emit('update', serverList.servers[sid]);
+      io.in('server-list').emit('add-server', serverList.servers[sid]);
+    }
+  }
+  userList[gd.creator.id].inGame = game.id;
   serverList.addServer(game);
   io.to('server-list').emit("add-server", game);
   res.set('Content-Type', 'application/text');
-  res.status(200).send(game.id+"");
+  res.status(200).send(game.id);
 }
 
 // get game function for get/server/:id route
